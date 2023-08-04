@@ -38,15 +38,16 @@ class GameVisualiser:
         self.window.fill((0, 0, 0))
         for row_lst in self.grid:
             for hexagon in row_lst:
+                hexagon.update_hexagon(self.board)
                 hexagon.draw_hexagon()
         pygame.display.flip()
 
-    def update_visualisation(self):
+    def update_visualisation(self):   # Is that useful?
         for row_lst in self.grid:
             for hexagon in row_lst:
                 hexagon.update_hexagon(self.board)
 
-    def handle_events(self):
+    def handle_QUIT(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:  # The user clicked the close button
                 pygame.quit()
