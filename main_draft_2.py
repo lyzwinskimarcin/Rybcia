@@ -11,13 +11,11 @@ HEXAGON_SIZE = 70  # side length
 N_ROWS = 5
 N_COLS = 5
 PENGUINS_NUMBER = 2
-VISUALISATION_SETTING = "Pygame"
+VISUALISATION_CONSOLE = True
 
 
 def visualise(vis_setting, board, gameVisualiser = None):
-    if vis_setting == "Pygame":
-        gameVisualiser.draw_grid()
-    elif vis_setting == "Console":
+    if vis_setting:
         print("Fish board")
         board.print_board(board.fish_board)
         print("Player board")
@@ -37,13 +35,6 @@ def main():
     gameLogic = GameLogic(N_ROWS, N_COLS)
     player_turn = 1
 
-    # Setup pygame if needed
-    if VISUALISATION_SETTING == "Pygame":
-        # pygame setup method from game visualiser
-        gameVisualiser = GameVisualiser(gameLogic.board)
-    else:
-        gameVisualiser = None
-
     # Set starting positions for the players
     choose_positions_phase = True
     running = True
@@ -51,7 +42,7 @@ def main():
         # Firstly choose the starting positions for the penguins
         if choose_positions_phase:
             # Visualise the board
-            visualise(VISUALISATION_SETTING, gameLogic.board, gameVisualiser)
+            visualise(VISUALISATION_CONSOLE, gameLogic.board)
 
             # Get input for the move
             row, col = gameLogic.get_move_input()
@@ -60,7 +51,7 @@ def main():
             player_turn = change_turn(player_turn)
 
             # Repeat for the second player (it's not looped so that it's easy to implement AI)
-            visualise(VISUALISATION_SETTING, gameLogic.board, gameVisualiser)
+            visualise(VISUALISATION_CONSOLE, gameLogic.board)
             row, col = gameLogic.get_move_input()
             gameLogic.choose_starting_position(player_turn, row, col)
             player_turn = change_turn(player_turn)
@@ -71,7 +62,7 @@ def main():
                 choose_positions_phase = False
         else:
             # The main part of the game
-            visualise(VISUALISATION_SETTING, gameLogic.board, gameVisualiser)
+            visualise(VISUALISATION_CONSOLE, gameLogic.board)
             if gameLogic.is_game_over():
                 break
             # Player 1 move
@@ -80,7 +71,7 @@ def main():
             gameLogic.make_move(player_turn, penguin_row, penguin_col, target_row, target_col)
             player_turn = change_turn(player_turn)
 
-            visualise(VISUALISATION_SETTING, gameLogic.board, gameVisualiser)
+            visualise(VISUALISATION_CONSOLE, gameLogic.board)
 
             if gameLogic.is_game_over():
                 break
@@ -90,9 +81,7 @@ def main():
             gameLogic.make_move(player_turn, penguin_row, penguin_col, target_row, target_col)
             player_turn = change_turn(player_turn)
 
-            visualise(VISUALISATION_SETTING, gameLogic.board, gameVisualiser)
-            if VISUALISATION_SETTING == "Pygame":
-                gameVisualiser.handle_QUIT()
+            visualise(VISUALISATION_CONSOLE, gameLogic.board)
 
 
 
