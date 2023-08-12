@@ -4,8 +4,8 @@ from game_manager import GameManager
 WINDOW_HEIGHT = 900
 WINDOW_WIDTH = 1700
 HEXAGON_SIZE = 70  # side length
-N_ROWS = 5
-N_COLS = 5
+N_ROWS = 7
+N_COLS = 10
 PENGUINS_NUMBER = 2
 
 VISUALISATION_TYPE = "pygame"

@@ -7,7 +7,6 @@ class Board:
         self.n_cols = n_cols
         self.fish_board, self.player_board, self.available_tiles_board = self.initialize_boards()
 
-
     def initialize_boards(self):
         """Initializes fish_board, player_board and available_tiles_board and returns them in that order"""
         shape = (self.n_rows, self.n_cols)
@@ -19,7 +18,6 @@ class Board:
         available_tiles_board = np.ones(shape, dtype='int8')
         return fish_board, player_board, available_tiles_board
 
-
     def choose_starting_position(self, player_number, row, col):
         """Takes x and y for starting position, changes the player_board and inserts given player_number"""
         try:
@@ -28,7 +26,6 @@ class Board:
         except IndexError:
             print(f"Error: The position ({row}, {col}) is out of bounds.")
         return self.player_board
-
 
     def print_board(self, board):
         for i, row in enumerate(board):

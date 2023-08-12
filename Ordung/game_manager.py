@@ -6,7 +6,6 @@ from player import Player
 class GameManager:
     def __init__(self, visualisation_type, control_type, n_rows, n_cols):
         self.visualisation_type = visualisation_type
-
         # Initialization
         self.gameLogic = GameLogic(n_rows, n_cols)
         self.player_1 = Player(1, visualisation_type, control_type)
@@ -51,6 +50,8 @@ class GameManager:
             self.visualise()
             self.player_move(self.player_2)
 
+
+
             if self.visualisation_type == "pygame":
                 self.pygameVisualiser.handle_QUIT()
 
@@ -62,7 +63,12 @@ class GameManager:
         if number_of_moves > 0:
             penguin_row, penguin_col = player.get_player_move()
             target_row, target_col = player.get_player_move()
-            self.gameLogic.make_move(player.player_number, penguin_row, penguin_col, target_row, target_col)
+            condition_player = self.gameLogic.board.player_board[penguin_row][penguin_col] == player.player_number
+            valid_moves_pos = self.gameLogic.board.check_valid_moves_helper((penguin_row, penguin_col))
+            if [target_row, target_col] in valid_moves_pos and condition_player:
+                self.gameLogic.make_move(player.player_number, penguin_row, penguin_col, target_row, target_col)
+            else:
+                self.player_move(player)
 
 
 

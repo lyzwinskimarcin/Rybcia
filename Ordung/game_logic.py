@@ -44,13 +44,6 @@ class GameLogic:
             self.player_2_fish += fish
             self.player_2_tiles += 1
 
-    def get_move_input(self):
-        # Rows and columns counted from zero. To count them from one subtract 1 from each value
-        print("Type the row: ")
-        row = int(input())
-        print("Type the column: ")
-        col = int(input())
-        return row, col
 
     def game_over(self):
         if self.player_1_fish > self.player_2_fish:
