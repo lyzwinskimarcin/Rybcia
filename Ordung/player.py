@@ -16,12 +16,18 @@ class Player:
     def player_move(self):
         pass
 
-    def get_player_move(self):
+    def get_player_move(self, is_starting_pos=False, valid_starting_moves=None):
         if self.control_type == "console":
             row, col = self.get_move_input()
         elif self.control_type == "pygame":
             row, col = self.pygameVisualiser.get_mouse_move()
         # AI moves should be connected HERE
+
+        if is_starting_pos:
+            if (row, col) not in valid_starting_moves:
+                print("Invalid starting positions were given")
+                row, col = self.get_player_move(is_starting_pos, valid_starting_moves)
+
         return row, col
 
     def get_move_input(self):

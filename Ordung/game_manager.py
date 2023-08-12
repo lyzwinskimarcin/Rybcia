@@ -31,10 +31,12 @@ class GameManager:
     def choose_starting_positions(self, penguin_number):
         while penguin_number >= 0:
             self.visualise()
-            row, col = self.player_1.get_player_move()
+            valid_starting_moves = self.gameLogic.board.get_valid_starting_positions()
+            row, col = self.player_1.get_player_move(is_starting_pos=True, valid_starting_moves=valid_starting_moves)
             self.gameLogic.choose_starting_position(self.player_1.player_number, row, col)
             self.visualise()
-            row, col = self.player_2.get_player_move()
+            valid_starting_moves = self.gameLogic.board.get_valid_starting_positions()
+            row, col = self.player_2.get_player_move(is_starting_pos=True, valid_starting_moves=valid_starting_moves)
             self.gameLogic.choose_starting_position(self.player_2.player_number, row, col)
 
             penguin_number -= 2
@@ -58,7 +60,8 @@ class GameManager:
     def player_move(self, player):
         number_of_moves = 0
         valid_moves = self.gameLogic.board.check_valid_moves(player.player_number)
-        for moves_lst in valid_moves:
+        print(valid_moves)
+        for moves_lst in valid_moves.values():
             number_of_moves += len(moves_lst)
         if number_of_moves > 0:
             penguin_row, penguin_col = player.get_player_move()

@@ -6,6 +6,7 @@ class Board:
         self.n_rows = n_rows
         self.n_cols = n_cols
         self.fish_board, self.player_board, self.available_tiles_board = self.initialize_boards()
+        self.player_turn = 1
 
     def initialize_boards(self):
         """Initializes fish_board, player_board and available_tiles_board and returns them in that order"""
@@ -20,6 +21,7 @@ class Board:
 
     def choose_starting_position(self, player_number, row, col):
         """Takes x and y for starting position, changes the player_board and inserts given player_number"""
+        self.get_valid_starting_positions()
         try:
             self.available_tiles_board[row][col] = 0
             self.player_board[row][col] = player_number
@@ -42,17 +44,25 @@ class Board:
         fish = self.fish_board[penguin_row][penguin_col]
         self.fish_board[penguin_row][penguin_col] = 0
         self.available_tiles_board[target_row][target_col] = 0
+        self.player_turn = 2 if self.player_turn == 1 else 1
         return fish
 
+    def get_valid_starting_positions(self):
+        positions_of_ones = np.argwhere((self.fish_board == 1) & (self.player_board == 0))
+        positions_of_ones_set = {(row, col) for row, col in positions_of_ones}
+        return positions_of_ones_set
     def check_valid_moves(self, player_number):
+        # might be updated after transforming valid_moves into a dictionary but does not have to be
         if not np.any(self.player_board == player_number):
             raise ValueError(f"Error: There is no player with number {player_number} on the board.")
         player_positions = np.argwhere(self.player_board == player_number)
         # print(player_positions)
-        valid_moves = []
+        valid_moves = {}
         for pos in player_positions:
             elt = self.check_valid_moves_helper(pos)
-            valid_moves.append(elt)
+            pos = tuple(pos)
+            # valid moves stores lists of moves as values and positions of penguins as keys
+            valid_moves[pos] = elt
 
         # For debugging
         # for lst in valid_moves:
