@@ -1,5 +1,6 @@
 from board import Board
 from game_logic import GameLogic
+from mcts import MCTS
 
 
 class Player:
@@ -10,19 +11,25 @@ class Player:
         self.visualisation_type = visualisation_type
         self.control_type = control_type
 
+    def set_mcts(self, board):
+        self.mcts = MCTS(board)
+
     def set_pygameVisualiser(self, pygameVisualiser):
         self.pygameVisualiser = pygameVisualiser
 
     def player_move(self):
         pass
 
-    def get_player_move(self, is_starting_pos=False, valid_starting_moves=None):
+    def get_player_move(self, board, is_starting_pos=False):
         if self.control_type == "console":
             row, col = self.get_move_input()
         elif self.control_type == "pygame":
             row, col = self.pygameVisualiser.get_mouse_move()
-        # AI moves should be connected HERE
-
+        elif self.control_type == "AI" and is_starting_pos:
+            row, col = self.mcts.get_mcts_starting_pos(board)
+        elif self.control_type == "AI":
+            row, col = self.mcts.get_mcts_move(board)
+        valid_starting_moves = board.get_valid_starting_positions()
         if is_starting_pos:
             if (row, col) not in valid_starting_moves:
                 print("Invalid starting positions were given")

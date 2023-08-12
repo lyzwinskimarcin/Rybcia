@@ -16,7 +16,7 @@ class GameLogic:
         number_of_valid_moves = 0
         for _ in range(1, 3):
             valid_moves = self.board.check_valid_moves(_)
-            for moves_lst in valid_moves:
+            for moves_lst in valid_moves.values():
                 number_of_valid_moves += len(moves_lst)
         return True if number_of_valid_moves == 0 else False
 

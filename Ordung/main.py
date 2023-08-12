@@ -9,14 +9,16 @@ N_COLS = 10
 PENGUINS_NUMBER = 2
 
 VISUALISATION_TYPE = "pygame"
-CONTROL_TYPE = "pygame"
+CONTROL_PLAYER_1 = "pygame"
+CONTROL_PLAYER_2 = "AI"
+
 
 # VISUALISATION_TYPE = "console"
 # CONTROL_TYPE = "console"
 
 
 def main():
-    gameManager = GameManager(VISUALISATION_TYPE, CONTROL_TYPE, N_ROWS, N_COLS)
+    gameManager = GameManager(VISUALISATION_TYPE, CONTROL_PLAYER_1, CONTROL_PLAYER_2, N_ROWS, N_COLS)
     gameManager.choose_starting_positions(PENGUINS_NUMBER)
     gameManager.game()
     gameManager.gameLogic.game_over()

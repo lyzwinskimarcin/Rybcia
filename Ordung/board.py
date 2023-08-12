@@ -51,6 +51,7 @@ class Board:
         positions_of_ones = np.argwhere((self.fish_board == 1) & (self.player_board == 0))
         positions_of_ones_set = {(row, col) for row, col in positions_of_ones}
         return positions_of_ones_set
+
     def check_valid_moves(self, player_number):
         # might be updated after transforming valid_moves into a dictionary but does not have to be
         if not np.any(self.player_board == player_number):

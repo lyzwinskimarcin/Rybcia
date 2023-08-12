@@ -1,19 +1,24 @@
+import game_logic
 from Visualisation.game_visualiser import GameVisualiser
 from game_logic import GameLogic
 from player import Player
 
 
 class GameManager:
-    def __init__(self, visualisation_type, control_type, n_rows, n_cols):
+    def __init__(self, visualisation_type, control_player_1, control_player_2, n_rows, n_cols):
         self.visualisation_type = visualisation_type
         # Initialization
         self.gameLogic = GameLogic(n_rows, n_cols)
-        self.player_1 = Player(1, visualisation_type, control_type)
-        self.player_2 = Player(2, visualisation_type, control_type)
+        self.player_1 = Player(1, visualisation_type, control_player_1)
+        self.player_2 = Player(2, visualisation_type, control_player_2)
         if visualisation_type == "pygame":
             self.pygameVisualiser = GameVisualiser(self.gameLogic.board)
             self.player_1.set_pygameVisualiser(self.pygameVisualiser)
             self.player_2.set_pygameVisualiser(self.pygameVisualiser)
+        if control_player_1 == "AI":
+            self.player_1.set_mcts(self.gameLogic.board)
+        if control_player_2 == "AI":
+            self.player_2.set_mcts(self.gameLogic.board)
 
     def visualise(self):
         if self.visualisation_type == "console":
@@ -31,12 +36,10 @@ class GameManager:
     def choose_starting_positions(self, penguin_number):
         while penguin_number >= 0:
             self.visualise()
-            valid_starting_moves = self.gameLogic.board.get_valid_starting_positions()
-            row, col = self.player_1.get_player_move(is_starting_pos=True, valid_starting_moves=valid_starting_moves)
+            row, col = self.player_1.get_player_move(self.gameLogic.board, is_starting_pos=True)
             self.gameLogic.choose_starting_position(self.player_1.player_number, row, col)
             self.visualise()
-            valid_starting_moves = self.gameLogic.board.get_valid_starting_positions()
-            row, col = self.player_2.get_player_move(is_starting_pos=True, valid_starting_moves=valid_starting_moves)
+            row, col = self.player_2.get_player_move(self.gameLogic.board, is_starting_pos=True)
             self.gameLogic.choose_starting_position(self.player_2.player_number, row, col)
 
             penguin_number -= 2
@@ -64,8 +67,8 @@ class GameManager:
         for moves_lst in valid_moves.values():
             number_of_moves += len(moves_lst)
         if number_of_moves > 0:
-            penguin_row, penguin_col = player.get_player_move()
-            target_row, target_col = player.get_player_move()
+            penguin_row, penguin_col = player.get_player_move(self.gameLogic.board)
+            target_row, target_col = player.get_player_move(self.gameLogic.board)
             condition_player = self.gameLogic.board.player_board[penguin_row][penguin_col] == player.player_number
             valid_moves_pos = self.gameLogic.board.check_valid_moves_helper((penguin_row, penguin_col))
             if [target_row, target_col] in valid_moves_pos and condition_player:
