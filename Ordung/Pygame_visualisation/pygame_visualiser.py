@@ -8,9 +8,11 @@ WINDOW_WIDTH = 1700
 HEXAGON_SIZE = 70  # side length
 
 
-class GameVisualiser:
+class PygameVisualiser:
     def __init__(self, board):
         pygame.init()
+        pygame.font.init()
+        self.my_font = pygame.font.SysFont('Comic Sans MS', 30)
         self.window = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
         self.board = board
         self.grid = self.create_grid()
@@ -40,12 +42,28 @@ class GameVisualiser:
             for hexagon in row_lst:
                 hexagon.update_hexagon(self.board)
                 hexagon.draw_hexagon()
-        pygame.display.flip()
 
-    def update_visualisation(self):   # Is that useful?
-        for row_lst in self.grid:
-            for hexagon in row_lst:
-                hexagon.update_hexagon(self.board)
+    def display_score(self, player_1_fish, player_1_tiles, player_2_fish, player_2_tiles):
+        line_height = 30
+        x_offset = 250
+        y_offset = 10
+        x = WINDOW_WIDTH - x_offset
+        y = y_offset
+
+        player_1_fish_text = f"Player 1 fish: {player_1_fish}"
+        player_1_tiles_text = f"Player 1 tiles: {player_1_tiles}"
+        player_2_fish_text = f"Player 2 fish: {player_2_fish}"
+        player_2_tiles_text = f"Player 2 tiles: {player_2_tiles}"
+        lines = [player_1_fish_text, player_1_tiles_text, player_2_fish_text, player_2_tiles_text]
+        for line in lines:
+            text_surface = self.my_font.render(line, False, (255, 255, 255))
+            self.window.blit(text_surface, (x, y))
+            y += line_height
+
+    def draw_board(self, player_1_fish, player_1_tiles, player_2_fish, player_2_tiles):
+        self.draw_grid()
+        self.display_score(player_1_fish, player_1_tiles, player_2_fish, player_2_tiles)
+        pygame.display.flip()
 
     def handle_QUIT(self):
         for event in pygame.event.get():

@@ -1,5 +1,5 @@
 import game_logic
-from Visualisation.game_visualiser import GameVisualiser
+from Pygame_visualisation.pygame_visualiser import PygameVisualiser
 from game_logic import GameLogic
 from player import Player
 
@@ -12,7 +12,7 @@ class GameManager:
         self.player_1 = Player(1, visualisation_type, control_player_1)
         self.player_2 = Player(2, visualisation_type, control_player_2)
         if visualisation_type == "pygame":
-            self.pygameVisualiser = GameVisualiser(self.gameLogic.board)
+            self.pygameVisualiser = PygameVisualiser(self.gameLogic.board)
             self.player_1.set_pygameVisualiser(self.pygameVisualiser)
             self.player_2.set_pygameVisualiser(self.pygameVisualiser)
         if control_player_1 == "AI":
@@ -31,7 +31,11 @@ class GameManager:
             self.gameLogic.board.print_board(self.gameLogic.board.available_tiles_board)
         elif self.visualisation_type == "pygame":
             # Pygame visualisation, needs to be set up
-            self.pygameVisualiser.draw_grid()
+            player_1_fish = self.gameLogic.player_1_fish
+            player_1_tiles = self.gameLogic.player_1_tiles
+            player_2_fish = self.gameLogic.player_2_fish
+            player_2_tiles = self.gameLogic.player_2_tiles
+            self.pygameVisualiser.draw_board(player_1_fish, player_1_tiles, player_2_fish, player_2_tiles)
 
     def choose_starting_positions(self, penguin_number):
         while penguin_number >= 0:

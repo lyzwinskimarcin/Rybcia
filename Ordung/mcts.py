@@ -62,7 +62,7 @@ class MCTS:
         return penguin_pos, target_pos
 
     def get_move_to_consider(self, board):
-        moves = {}
+        moves = set()
         valid_moves = board.check_valid_moves
 
 
