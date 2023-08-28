@@ -2,6 +2,7 @@ import numpy as np
 from board import Board
 import random
 
+
 class MCTS:
     def __init__(self, board):
         self.draft_board = Board(board.n_rows, board.n_cols)
