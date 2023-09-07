@@ -69,9 +69,10 @@ class PygameVisualiser:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:  # The user clicked the close button
                 pygame.quit()
-            elif event.type == pygame.MOUSEBUTTONDOWN:
-                row, col = self.check_which_hexagon(event.pos)
-                return row, col
+            # THIS IS USELESS RIGHT?
+            # elif event.type == pygame.MOUSEBUTTONDOWN:
+            #     row, col = self.check_which_hexagon(event.pos)
+            #     return row, col
 
     def check_which_hexagon(self, pos):
         click_radius = 0.85 * HEXAGON_SIZE  # inside circle radius approximation
@@ -79,7 +80,8 @@ class PygameVisualiser:
             for hexagon in row_lst:
                 distance = math.sqrt((pos[0] - hexagon.center_x) ** 2 + (pos[1] - hexagon.center_y) ** 2)
                 if distance <= click_radius:
-                    return hexagon.row, hexagon.col
+                    hex_pos = (hexagon.row, hexagon.col)
+                    return hex_pos
 
     def get_mouse_move(self):
         waiting_on_click = True
@@ -88,12 +90,12 @@ class PygameVisualiser:
                 if event.type == pygame.QUIT:  # The user clicked the close button
                     pygame.quit()
                 elif event.type == pygame.MOUSEBUTTONDOWN:
-                    row, col = self.check_which_hexagon(event.pos)
+                    pos = self.check_which_hexagon(event.pos)
                     waiting_on_click = False
-        if row == None or col == None:
+        if pos == None:
             raise ValueError(f"Error: There was a problem with getting the move from the mouse click.")
         else:
-            return row, col
+            return pos
 
 
 

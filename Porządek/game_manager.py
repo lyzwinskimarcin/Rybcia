@@ -6,7 +6,6 @@ from player import Player
 
 class GameManager:
     def __init__(self, visualisation_type, control_player_1, control_player_2, n_rows, n_cols):
-        self.visualisation_type = visualisation_type
         # Initialization
         self.gameLogic = GameLogic(n_rows, n_cols)
         self.player_1 = Player(1, visualisation_type, control_player_1)

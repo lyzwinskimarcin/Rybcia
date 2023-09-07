@@ -1,0 +1,24 @@
+1. Selection:
+W pierwszej iteracji nic. Potem wybór używając UCB score (aż do liścia).
+2. Expansion:
+Utworzenie węzłów dla każdego możliwego ruchu z węzła w którym się znajduję.
+3. Simulation:
+Zasymulowanie gry randomowo do końca lub do określonej głębi i ocena pozycji.
+4. Backpropagation
+
+Przy następnych ruchach można używać ponownie węzły utworzone wcześniej w wybranej wcześniej gałęzi.
+
+
+
+
+
+
+
+UCB structure:
+def uct_score(node_total_score, node_total_visits, parent_total_visits, Cp=Cp_default):
+        """ UCB1 calculation. """
+        if node_total_visits == 0:
+            return math.inf
+        return node_total_score / node_total_visits + Cp * math.sqrt(
+            2 * math.log(parent_total_visits) / node_total_visits)
+

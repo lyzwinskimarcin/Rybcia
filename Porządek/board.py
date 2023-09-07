@@ -74,7 +74,7 @@ class Board:
         return valid_moves
 
     def check_valid_moves_helper(self, position):
-        """Helper function checking for valid moves for the given position and not for the player"""
+        """Helper function checking for valid moves for the given penguin position and not for the player"""
         valid_moves_for_position = []
         col_step = 0
         # check the row to the left
