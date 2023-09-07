@@ -27,7 +27,7 @@ class Board:
 
     def is_game_over(self):
         number_of_valid_moves = 0
-        penguins_positions = np.argwhere(self.player_board != 0)
+        penguins_positions = np.argwhere(self.player_board != 0)  # All penguins that's why get_penguins_positions is not used
         for pos in penguins_positions:
             moves_lst = self.check_valid_moves(pos)
             number_of_valid_moves += len(moves_lst)
@@ -149,6 +149,13 @@ class Board:
             self.player_2_fish += fish
             self.player_2_tiles += 2
         self.player_turn = 2 if self.player_turn == 1 else 1
+        # number_of_valid_moves = 0
+        # penguins_positions = self.get_penguins_positions(self.player_turn)
+        # for pos in penguins_positions:
+        #     moves_lst = self.check_valid_moves(pos)
+        #     number_of_valid_moves += len(moves_lst)
+        # if number_of_valid_moves == 0:
+        #     self.player_turn = 2 if self.player_turn == 1 else 1
 
     # CONSOLE VISUALISATION METHODS
 
