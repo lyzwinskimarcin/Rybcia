@@ -17,14 +17,15 @@ CONTROL_PLAYER_2 = "pygame"
 
 
 class GameManager:
-    def __init__(self, n_rows, n_cols, visualisation_type, control_player_1, control_player_2, penguin_number):
+    def __init__(self, n_rows, n_cols, visualisation_type, control_player_1, control_player_2, number_of_penguins):
         self.board = Board(n_rows, n_cols)
+        self.penguin_number = number_of_penguins
         if visualisation_type == "pygame":
             self.pygame_visualiser = PygameVisualiser(self.board)
         self.visualisation_type = visualisation_type
         self.player_1 = Player(1, self, control_player_1)
         self.player_2 = Player(2, self, control_player_2)
-        self.penguin_number = penguin_number
+
 
     def visualise(self):
         if self.visualisation_type == "console":
@@ -90,9 +91,6 @@ class GameManager:
             penguin_number -= 1
             if self.visualisation_type == "pygame":
                 self.pygame_visualiser.handle_QUIT()
-
-
-
 
     # MAIN GAME LOOP
 

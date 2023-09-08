@@ -137,6 +137,7 @@ class Board:
     # METHODS FOR MAKING A MOVE
 
     def choose_starting_position(self, pos):
+        pos = tuple(pos)
         if pos not in self.get_valid_starting_positions():
             raise ValueError("The given position is not valid. You can only start on 1 fish tiles")
         try:
@@ -159,7 +160,7 @@ class Board:
             self.player_1_tiles += 1
         elif self.player_turn == 2:
             self.player_2_fish += fish
-            self.player_2_tiles += 2
+            self.player_2_tiles += 1
         self.player_turn = 2 if self.player_turn == 1 else 1
         number_of_valid_moves = 0
         penguins_positions = self.get_penguins_positions(self.player_turn)
