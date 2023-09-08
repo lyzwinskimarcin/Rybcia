@@ -49,7 +49,7 @@ class GameManager:
         valid_positions = self.board.get_penguins_positions(player.player_number)
         pos = player.get_player_pos(self.board)
         if pos not in valid_positions:
-            print(f"There is no penguin on this field: {pos}")
+            print(f"There is no movable penguin on this field: {pos}")
             pos = self.get_penguin_pos(player)
         return pos
 
@@ -107,23 +107,9 @@ class GameManager:
             if self.board.is_game_over():
                 break
             if self.board.player_turn == 1:
-                available_moves = []
-                penguins_positions = self.board.get_penguins_positions(1)
-                for penguin_pos in penguins_positions:
-                    available_moves.extend(self.board.check_valid_moves(penguin_pos))
-                if len(available_moves) > 0:
-                    self.turn(self.player_1)
-                else:
-                    self.board.player_turn = 2 if self.board.player_turn == 1 else 1
+                self.turn(self.player_1)
             elif self.board.player_turn == 2:
-                available_moves = []
-                penguins_positions = self.board.get_penguins_positions(2)
-                for penguin_pos in penguins_positions:
-                    available_moves.extend(self.board.check_valid_moves(penguin_pos))
-                if len(available_moves) > 0:
-                    self.turn(self.player_2)
-                else:
-                    self.board.player_turn = 2 if self.board.player_turn == 1 else 1
+                self.turn(self.player_2)
         self.board.game_over()
 
 

@@ -33,6 +33,15 @@ class Board:
             number_of_valid_moves += len(moves_lst)
         return True if number_of_valid_moves == 0 else False
 
+    def who_won(self):
+        """Useful for mcts, returns player number that won or 0 if there is a draw"""
+        if self.player_1_fish > self.player_2_fish:
+            return 1
+        elif self.player_1_fish < self.player_2_fish:
+            return 2
+        else:
+            return 0
+
     # METHODS CHECKING FOR VALID MOVES
 
     def get_valid_starting_positions(self):
@@ -44,6 +53,9 @@ class Board:
         penguins_positions = np.argwhere(self.player_board == player_number)
         # Convert to list of tuples
         penguins_positions_tuples = [tuple(pos) for pos in penguins_positions]
+        for pos in penguins_positions_tuples:
+            if not self.check_valid_moves(pos):
+                penguins_positions_tuples.remove(pos)
         return penguins_positions_tuples
 
     def check_valid_moves(self, position):
@@ -149,13 +161,13 @@ class Board:
             self.player_2_fish += fish
             self.player_2_tiles += 2
         self.player_turn = 2 if self.player_turn == 1 else 1
-        # number_of_valid_moves = 0
-        # penguins_positions = self.get_penguins_positions(self.player_turn)
-        # for pos in penguins_positions:
-        #     moves_lst = self.check_valid_moves(pos)
-        #     number_of_valid_moves += len(moves_lst)
-        # if number_of_valid_moves == 0:
-        #     self.player_turn = 2 if self.player_turn == 1 else 1
+        number_of_valid_moves = 0
+        penguins_positions = self.get_penguins_positions(self.player_turn)
+        for pos in penguins_positions:
+            moves_lst = self.check_valid_moves(pos)
+            number_of_valid_moves += len(moves_lst)
+        if number_of_valid_moves == 0:
+            self.player_turn = 2 if self.player_turn == 1 else 1
 
     # CONSOLE VISUALISATION METHODS
 

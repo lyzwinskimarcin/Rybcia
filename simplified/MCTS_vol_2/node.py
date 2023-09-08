@@ -42,12 +42,16 @@ class Node:
     def select_child(self):
         # HERE SHOULD BE UCB
         child = random.sample(self.children)
-        child.vis += 1
         return child
 
     def is_expandable(self):
-        return True if len(self.moves_to_expand) > 0 else False
+        return True if not self.moves_to_expand > 0 else False
 
+    def backpropagate(self, score):
+        self.vis += 1
+        self.val += score
+        if self.parent is not None:
+            self.parent.backpropagate(1 - score)
 
 
 

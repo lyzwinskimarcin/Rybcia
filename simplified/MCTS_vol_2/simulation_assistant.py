@@ -1,3 +1,5 @@
+import random
+
 from simplified.board import Board
 from node import Node
 
@@ -25,11 +27,48 @@ class SimulationAssistant:
             is_terminal = False
             is_penguin_selected = True
             moves_to_expand = self.assist_board.check_valid_moves(move)
-            parent.create_child(parent, move, self.assist_board, moves_to_expand, is_terminal, is_penguin_selected)
+            child = parent.create_child(parent, move, self.assist_board, moves_to_expand, is_terminal, is_penguin_selected)
         else:
             self.assist_board.board_move(parent.move, move)
             is_terminal = True if self.assist_board.is_game_over() else False
             is_penguin_selected = False
             moves_to_expand = self.assist_board.get_penguins_positions(self.assist_board.player_turn)
-            parent.create_child(parent, move, self.assist_board, moves_to_expand, is_terminal, is_penguin_selected)
+            child = parent.create_child(parent, move, self.assist_board, moves_to_expand, is_terminal, is_penguin_selected)
+        return child
+
+    def simulate(self):
+        score = 0
+        if self.penguin_selected is not None:
+            target_move = random.sample(self.assist_board.check_valid_moves(self.penguin_selected))
+            self.assist_board.board_move(self.penguin_selected, target_move)
+            score = self.simulate()
+        else:
+            # Simulation if penguin is not selected
+            running = True
+            while running:
+                if self.assist_board.is_game_over():
+                    score = self.get_score()
+                    break
+                penguin_positions = self.assist_board.get_penguins_positions(self.assist_board.player_turn)
+                penguin_pos = random.sample(penguin_positions)
+                target_moves = self.assist_board.check_valid_moves(penguin_pos)
+                if target_moves:
+                    target_pos = random.sample(target_moves)
+                else:
+                    penguin_positions.remove(penguin_pos)
+                    penguin_pos = penguin_positions[0]
+                    target_pos = random.sample(self.assist_board.check_valid_moves(penguin_pos))
+                self.assist_board.board_move(penguin_pos, target_pos)
+        return score
+
+    def get_score(self):
+        who_won = self.assist_board.who_won()
+        score = 0
+        if who_won == 0:
+            score = 0
+        elif who_won == self.assist_board.player_turn:
+            score = 1
+        else:
+            score = -1
+        return score
 

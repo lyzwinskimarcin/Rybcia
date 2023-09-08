@@ -1,4 +1,4 @@
-
+from MCTS_vol_2.mcts_vol_3 import MCTS
 
 class Player:
     def __init__(self, player_number, game_manager, control_type="console"):
@@ -11,7 +11,7 @@ class Player:
             self.pygame_visualiser = game_manager.pygame_visualiser
         elif control_type == "AI":
             # Initialize mcts here
-            pass
+            self.mcts = MCTS(game_manager.board.n_rows, game_manager.board.n_cols, game_manager.penguin_number)
 
     def get_console_pos(self):
         # Rows and columns counted from zero. To count them from one subtract 1 from each value
@@ -31,7 +31,7 @@ class Player:
             pos = self.get_console_pos()
         elif self.control_type == "AI":
             # We'll see how mcts is implemented
-            pass
+            pos = self.mcts.get_pos(board)
         return pos
 
 
