@@ -1,10 +1,14 @@
 import pygame
 import math
 from .hexagon import Hexagon
+import os
+
+# Set the position of the window
+os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (700, 100)
 
 
 WINDOW_HEIGHT = 900
-WINDOW_WIDTH = 1700
+WINDOW_WIDTH = 1200
 HEXAGON_SIZE = 70  # side length
 
 

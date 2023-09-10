@@ -50,16 +50,23 @@ class MCTS:
             iteration += 1
             # if iteration % 10 == 0:
             #     print(iteration)
-        strongest_node = root_node.select_child()
+        strongest_node = root_node.select_strongest_child()
         self.penguin_pos = strongest_node.move
-        self.target_pos = strongest_node.select_child().move
+        self.target_pos = strongest_node.select_strongest_child().move
+
+        # Printing out top 3 moves below
+        top_moves = self.get_top_moves(root_node, 3)
+        print(f"Penguin position: {root_node.select_strongest_child().move}")
+        for key, value in top_moves.items():
+            print( f"Move: {value} \nVal: {key}")
+        print("################")
         # return penguin_pos, target_pos
 
     def one_iteration(self, root_node):
         node = root_node.single_run()
         if node.is_terminal:
             self.simulation_assistant.get_node_board(node)
-            score = self.simulation_assistant.get_score()
+            score = self.simulation_assistant.get_score(node.current_player)
             node.backpropagate(score)  # NEEDS SCORE!!!
         elif node.is_expandable():
             move = random.sample(node.moves_to_expand, 1)[0]
@@ -70,10 +77,21 @@ class MCTS:
             node = self.simulation_assistant.expand_node(node, move)
             # PERFORM SIMULATION
             self.simulation_assistant.get_node_board(node)
-            simulation_score = self.simulation_assistant.simulate()
+            simulation_score = self.simulation_assistant.simulate(node.current_player)
             node.backpropagate(simulation_score)
         else:
             print("A this point in the code, the selected node should be either terminal or expandable")
+
+    def get_top_moves(self, root_node, n_moves):
+        penguin_node = root_node.select_strongest_child()
+        top_moves = dict()
+        if len(penguin_node.children) < n_moves:
+            n_moves = len(penguin_node.children)
+        for i in range(n_moves):
+            child = penguin_node.select_strongest_child()
+            penguin_node.children.remove(child)
+            top_moves[child.val] = child.move
+        return top_moves
 
 
 

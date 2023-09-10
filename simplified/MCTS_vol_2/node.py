@@ -51,9 +51,8 @@ class Node:
         return node
 
     def select_child(self):
-        # HERE SHOULD BE UCB
-        strongest_child = max(self.children, key=lambda child: child.ucb())
-        return strongest_child
+        child = max(self.children, key=lambda node: node.ucb())
+        return child
 
     def is_expandable(self):
         return True if len(self.moves_to_expand) > 0 else False
@@ -62,7 +61,9 @@ class Node:
         self.vis += 1
         self.val += score
         if self.parent is not None:
-            self.parent.backpropagate(1 - score)
+            self.parent.backpropagate(score * (-1))
 
-
+    def select_strongest_child(self):
+        strongest_child = max(self.children, key=lambda child: child.val)
+        return strongest_child
 

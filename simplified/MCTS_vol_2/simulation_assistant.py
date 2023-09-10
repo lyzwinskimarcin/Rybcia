@@ -48,25 +48,25 @@ class SimulationAssistant:
             child = parent.create_child(parent, move, self.assist_board, moves_to_expand, is_terminal, is_penguin_selected)
         return child
 
-    def simulate(self):
+    def simulate(self, node_player_number):
         score = 0
         if self.assist_board.is_game_over():
-            score = self.get_score()
+            score = self.get_score(node_player_number)
             return score
         if self.penguin_selected is not None:
             target_move = random.sample(self.assist_board.check_valid_moves(self.penguin_selected), 1)[0]
             self.assist_board.board_move(self.penguin_selected, target_move)
             self.penguin_selected = None
             if self.assist_board.is_game_over():
-                score = self.get_score()
+                score = self.get_score(node_player_number)
             else:
-                score = self.simulate()
+                score = self.simulate(node_player_number)
         else:
             # Simulation if penguin is not selected
             running = True
             while running:
                 if self.assist_board.is_game_over():
-                    score = self.get_score()
+                    score = self.get_score(node_player_number)
                     break
                 penguin_positions = self.assist_board.get_penguins_positions(self.assist_board.player_turn)
                 penguin_pos = random.sample(penguin_positions, 1)[0]
@@ -80,12 +80,12 @@ class SimulationAssistant:
                 self.assist_board.board_move(penguin_pos, target_pos)
         return score
 
-    def get_score(self):
+    def get_score(self, node_player_number):
         who_won = self.assist_board.who_won()
         score = 0
         if who_won == 0:
             score = 0
-        elif who_won == self.assist_board.player_turn:
+        elif who_won == node_player_number:
             score = 1
         else:
             score = -1
