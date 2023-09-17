@@ -23,7 +23,7 @@ class Node:
         self.children = set()
 
         self.move = move
-        self.current_player = board.player_turn
+        self.current_player = board.player_turn if is_penguin_selected else 3 - board.player_turn
         self.is_penguin_selected = is_penguin_selected
 
         self.moves_to_expand = moves_to_expand
@@ -33,16 +33,13 @@ class Node:
     def create_child(self, parent, move, board, moves_to_expand, is_terminal, is_penguin_selected, C=1.00):
         child = Node(parent, move, board, moves_to_expand, is_terminal, is_penguin_selected, C=C)
         self.children.add(child)
-        if is_terminal:
-            child.val = 1
         return child   # is that necessary?
 
     def ucb(self):
-        # if self.vis == 0:
-        #     return math.inf  # favor exploration of unvisited nodes
-        avg_val = self.val / self.vis  # Average value
+        if self.vis == 0:
+            return math.inf  # favor exploration of unvisited nodes
         exploration_term = self.C * math.sqrt(math.log(self.parent.vis) / self.vis)
-        return avg_val + exploration_term
+        return self.val + exploration_term
 
     def single_run(self):
         if self.is_terminal or self.is_expandable():
@@ -59,9 +56,9 @@ class Node:
 
     def backpropagate(self, score):
         self.vis += 1
-        self.val += score
+        self.val = ((self.val * (self.vis - 1)) + score) / self.vis
         if self.parent is not None:
-            self.parent.backpropagate(score * (-1))
+            self.parent.backpropagate(1 - score)
 
     def select_strongest_child(self):
         strongest_child = max(self.children, key=lambda child: child.val)

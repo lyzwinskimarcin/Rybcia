@@ -22,7 +22,8 @@ class SimulationAssistant:
         self.assist_board.fish_board = node.fish_board.copy()
         self.assist_board.player_board = node.player_board.copy()
         self.assist_board.available_tiles_board = node.available_tiles_board.copy()
-        self.assist_board.player_turn = node.current_player
+
+        self.assist_board.player_turn = node.current_player if node.is_penguin_selected else 3 - node.current_player
         self.assist_board.player_1_fish = node.player_1_fish
         self.assist_board.player_2_fish = node.player_2_fish
         self.assist_board.player_1_tiles = node.player_1_tiles
@@ -46,6 +47,12 @@ class SimulationAssistant:
             is_penguin_selected = False
             moves_to_expand = self.assist_board.get_penguins_positions(self.assist_board.player_turn)
             child = parent.create_child(parent, move, self.assist_board, moves_to_expand, is_terminal, is_penguin_selected)
+        # Update value if is terminal
+        if is_terminal:
+            self.get_node_board(child)
+            score = self.get_score(child.current_player)
+            child.val = score
+
         return child
 
     def simulate(self, node_player_number):
@@ -82,12 +89,33 @@ class SimulationAssistant:
 
     def get_score(self, node_player_number):
         who_won = self.assist_board.who_won()
-        score = 0
         if who_won == 0:
-            score = 0
+            score = 0.5
         elif who_won == node_player_number:
             score = 1
         else:
-            score = -1
+            score = 0
         return score
 
+    def recycle_node(self, node, board):
+        self.get_node_board(node)
+        penguins_positions = self.assist_board.get_penguins_positions(self.assist_board.player_turn)
+        for pos in penguins_positions:
+            if board.player_board[pos] != self.assist_board.player_turn:
+                move_from = pos
+                break
+        new_positions = board.get_penguins_positions(self.assist_board.player_turn)
+        penguins_positions = set(penguins_positions)
+        for pos in new_positions:
+            if pos not in penguins_positions:
+                move_to = pos
+                break
+        for child in node.children:
+            if child.move == move_from:
+                penguin_node = child
+                break
+        for child in penguin_node.children:
+            if child.move == move_to:
+                recycled_node = child
+                break
+        return recycled_node
