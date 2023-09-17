@@ -21,7 +21,7 @@ class Player:
                 C = PLAYER_1_C
             else:
                 C = PLAYER_2_C
-            self.mcts = MCTS(game_manager.board.n_rows, game_manager.board.n_cols, game_manager.penguin_number, iterations=7000, C_value=C)
+            self.mcts = MCTS(game_manager.board.n_rows, game_manager.board.n_cols, game_manager.number_of_penguins, iterations=3000, C_value=C)
 
     def get_console_pos(self):
         # Rows and columns counted from zero. To count them from one subtract 1 from each value
@@ -86,11 +86,11 @@ class Player:
         return move
 
     def get_mcts_move(self, board):
-        move = self.mcts.get_mcts_move(board)
+        move = self.mcts.get_move(board)
         valid_moves = board.get_valid_moves()
         if move not in valid_moves:
             print(f"Invalid mcts move given: {move}")
-            move = self.mcts.get_mcts_move(board)
+            move = self.mcts.get_move(board)
         return move
 
 

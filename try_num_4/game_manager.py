@@ -1,3 +1,4 @@
+import time
 from board import Board
 from player import Player
 from Pygame_visualisation.pygame_visualiser import PygameVisualiser
@@ -36,13 +37,16 @@ class GameManager:
             if self.board.is_game_over():
                 break
             self.visualise()
-            print(self.board.get_valid_moves())
             if self.board.player_turn == 1:
                 move = self.player_1.get_player_move(self.board)
             elif self.board.player_turn == 2:
                 move = self.player_2.get_player_move(self.board)
             self.board.move(move)
+        self.visualise()
         self.board.game_over()
+        self.board.print_scores()
+        time.sleep(10)
+
 
 
 

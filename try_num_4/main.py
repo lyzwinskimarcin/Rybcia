@@ -10,7 +10,7 @@ PENGUINS_NUMBER = 4
 
 VISUALISATION_TYPE = "pygame"
 CONTROL_PLAYER_1 = "pygame"
-CONTROL_PLAYER_2 = "pygame"
+CONTROL_PLAYER_2 = "AI"
 
 
 def main():
@@ -19,3 +19,4 @@ def main():
 
 
 main()
+

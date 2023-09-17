@@ -45,50 +45,49 @@ class Board:
         for pos in player_2_positions:
             self.player_2_fish += self.fish_board[pos]
         self.player_2_tiles += 1
-        # Print out scores
-        self.print_scores()
+
+
+    def who_won(self):
+        """Useful for mcts, returns player number that won or 0 if there is a draw"""
+        if self.player_1_fish > self.player_2_fish:
+            return 1
+        elif self.player_1_fish < self.player_2_fish:
+            return 2
+        else:
+            return 0
 
     # METHODS FOR MAKING MOVES
 
     def starting_move(self, move):
-        valid_starting_positions = self.get_valid_starting_positions()
-        if move not in valid_starting_positions:
-            raise Exception(f"A wrong starting position was given. {move}")
-        else:
-            self.player_board[move] = self.player_turn
-            self.available_tiles_board[move] = 0
-            # Turn change
-            self.player_turn = 3 - self.player_turn
+        self.player_board[move] = self.player_turn
+        self.available_tiles_board[move] = 0
+        # Turn change
+        self.player_turn = 3 - self.player_turn
 
         if np.count_nonzero(self.player_board) == self.number_of_penguins:
             self.is_starting_phase = False
 
     def middle_game_move(self, move):
-        valid_moves = self.get_valid_penguin_moves()
-        if move not in valid_moves:
-            raise Exception(f"A wrong move was given. {move}")
-        else:
-            penguin_pos = move[0]
-            target_pos = move[1]
-            if self.player_turn == 1:
-                self.player_1_fish += self.fish_board[penguin_pos]
-                self.player_1_tiles += 1
-                self.fish_board[penguin_pos] = 0
-                self.player_board[penguin_pos] = 0
-                self.player_board[target_pos] = 1
-                self.available_tiles_board[target_pos] = 0
-            elif self.player_turn == 2:
-                self.player_2_fish += self.fish_board[penguin_pos]
-                self.player_2_tiles += 1
-                self.fish_board[penguin_pos] = 0
-                self.player_board[penguin_pos] = 0
-                self.player_board[target_pos] = 2
-                self.available_tiles_board[target_pos] = 0
-
-            # Turn change
+        penguin_pos = move[0]
+        target_pos = move[1]
+        if self.player_turn == 1:
+            self.player_1_fish += self.fish_board[penguin_pos]
+            self.player_1_tiles += 1
+            self.fish_board[penguin_pos] = 0
+            self.player_board[penguin_pos] = 0
+            self.player_board[target_pos] = 1
+            self.available_tiles_board[target_pos] = 0
+        elif self.player_turn == 2:
+            self.player_2_fish += self.fish_board[penguin_pos]
+            self.player_2_tiles += 1
+            self.fish_board[penguin_pos] = 0
+            self.player_board[penguin_pos] = 0
+            self.player_board[target_pos] = 2
+            self.available_tiles_board[target_pos] = 0
+        # Turn change
+        self.player_turn = 3 - self.player_turn
+        if not self.get_valid_moves():
             self.player_turn = 3 - self.player_turn
-            if not self.get_valid_moves():
-                self.player_turn = 3 - self.player_turn
 
     def move(self, move: tuple):
         """Needs a position as a tuple in the starting phase  (row, col)
@@ -115,9 +114,9 @@ class Board:
     def get_valid_penguin_moves(self):
         valid_moves = set()
         positions = self.get_penguins_positions(self.player_turn)
-        col_step = 0
         for position in positions:
             # check the row to the left
+            col_step = 0
             while 0 < col_step + position[1]:
                 col_step -= 1
                 if self.available_tiles_board[position[0]][position[1] + col_step] == 1:
@@ -190,7 +189,7 @@ class Board:
                 row_step -= 1
                 col_step += 0 if d_row % 2 == 0 else 1
 
-        return valid_moves  # this format: [(0,1), (1,0)]
+        return valid_moves
 
     def get_valid_moves(self):
         if self.is_starting_phase:
