@@ -2,15 +2,15 @@ from game_manager import GameManager
 
 # Pycharm parameters are not yet set in this file, to set them go to pygame_visualiser
 WINDOW_HEIGHT = 900
-WINDOW_WIDTH = 1100
+WINDOW_WIDTH = 1200
 HEXAGON_SIZE = 70  # side length
-N_ROWS = 5
-N_COLS = 7
+N_ROWS = 7
+N_COLS = 10
 PENGUINS_NUMBER = 4
 
 VISUALISATION_TYPE = "pygame"
-CONTROL_PLAYER_1 = "pygame"
-CONTROL_PLAYER_2 = "AI"
+CONTROL_PLAYER_1 = "AI"
+CONTROL_PLAYER_2 = "pygame"
 
 
 def main():

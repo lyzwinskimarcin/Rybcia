@@ -21,7 +21,7 @@ class Player:
                 C = PLAYER_1_C
             else:
                 C = PLAYER_2_C
-            self.mcts = MCTS(game_manager.board.n_rows, game_manager.board.n_cols, game_manager.number_of_penguins, iterations=3000, C_value=C)
+            self.mcts = MCTS(game_manager.board.n_rows, game_manager.board.n_cols, game_manager.number_of_penguins, iterations=10000, C_value=C)
 
     def get_console_pos(self):
         # Rows and columns counted from zero. To count them from one subtract 1 from each value

@@ -12,7 +12,7 @@ class MCTS:
 
 
         # Node to recycle
-        # self.recycle_node = None
+        self.node_to_recycle = None
 
     def get_move(self, board):
         valid_moves = board.get_valid_moves()
@@ -24,10 +24,13 @@ class MCTS:
 
     def do_search(self, board):
         # Create a root node
-        current_player = 3 - board.player_turn
-        moves_to_expand = board.get_valid_moves()
-        root_node = Node(parent=None, move=None, current_player=current_player,
-                         moves_to_expand=moves_to_expand, is_terminal=False, C=self.C)
+        if self.node_to_recycle is None:
+            current_player = 3 - board.player_turn
+            moves_to_expand = board.get_valid_moves()
+            root_node = Node(parent=None, move=None, current_player=current_player,
+                             moves_to_expand=moves_to_expand, is_terminal=False, C=self.C)
+        else:
+            root_node = self.recycle_node(board)
         self.copy_board(board)
         iteration = 0
         while iteration < self.iterations:
@@ -35,6 +38,7 @@ class MCTS:
             self.copy_board(board)
             iteration += 1
         strongest_child = root_node.select_strongest_child()
+        self.node_to_recycle = strongest_child
         return strongest_child.move
 
     def single_run(self, node):
@@ -106,6 +110,12 @@ class MCTS:
         self.draft_board.player_2_tiles = board.player_2_tiles
         self.draft_board.is_starting_phase = board.is_starting_phase
 
+    def recycle_node(self, board):
+        for child in self.node_to_recycle.children:
+            # That's where opponent's penguin should stand on the board:
+            new_penguin_position = child.move if self.draft_board.is_starting_phase else child.move[1]
+            if board.player_board[new_penguin_position] == 3 - board.player_turn:
+                return child
 
 
 
