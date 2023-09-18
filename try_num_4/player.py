@@ -9,7 +9,6 @@ class Player:
     def __init__(self, player_number, game_manager, control_type="console"):
         """Set "console" to control the game from console, "pygame" to control through pygame.
                 You can set control_type to "AI" to play against AI"""
-        self.visits = 0  # For debugging
         self.player_number = player_number
         self.visualisation_type = game_manager.visualisation_type
         self.control_type = control_type

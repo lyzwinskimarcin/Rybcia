@@ -7,6 +7,8 @@ class MCTS:
     def __init__(self, n_rows, n_cols, number_of_penguins, iterations=1000, C_value=1.00):
         self.iterations = iterations
         self.C = C_value
+        self.vis_threshold = 10  # when to expand a node
+        self.draw_value = 0.5
 
         self.draft_board = Board(n_rows, n_cols, number_of_penguins)
 
@@ -24,13 +26,15 @@ class MCTS:
 
     def do_search(self, board):
         # Create a root node
-        if self.node_to_recycle is None:
+        root_node = None
+        if self.node_to_recycle is not None:
+            root_node = self.recycle_node(board)
+
+        if root_node is None:
             current_player = 3 - board.player_turn
             moves_to_expand = board.get_valid_moves()
             root_node = Node(parent=None, move=None, current_player=current_player,
                              moves_to_expand=moves_to_expand, is_terminal=False, C=self.C)
-        else:
-            root_node = self.recycle_node(board)
         self.copy_board(board)
         iteration = 0
         while iteration < self.iterations:
@@ -42,7 +46,7 @@ class MCTS:
         return strongest_child.move
 
     def single_run(self, node):
-        if node.is_expandable():
+        if node.is_expandable() and node.vis < self.vis_threshold:
             self.expand_and_simulate(node)
             return
         elif node.is_terminal:
@@ -92,7 +96,7 @@ class MCTS:
     def get_score(self, node_player_number):
         who_won = self.draft_board.who_won()
         if who_won == 0:
-            score = 0.5
+            score = self.draw_value
         elif who_won == node_player_number:
             score = 1
         else:

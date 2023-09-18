@@ -1,18 +1,15 @@
+from try_num_4.board import Board
+from hexagon_editor_version import Hexagon
 import pygame
 import math
-from .hexagon import Hexagon
-import os
-
-# Set the position of the window
-os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (700, 100)
-
+import pickle
 
 WINDOW_HEIGHT = 900
-WINDOW_WIDTH = 1200
+WINDOW_WIDTH = 1700
 HEXAGON_SIZE = 70  # side length
 
 
-class PygameVisualiser:
+class Editor:
     def __init__(self, board):
         pygame.init()
         pygame.font.init()
@@ -20,6 +17,8 @@ class PygameVisualiser:
         self.window = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
         self.board = board
         self.grid = self.create_grid()
+        self.button_pos = (WINDOW_WIDTH - 120, WINDOW_HEIGHT - 120)
+        self.button_radius = 50
 
     def create_grid(self):
         grid = [[None for _ in range(self.board.n_cols)] for _ in range(self.board.n_rows)]
@@ -40,6 +39,28 @@ class PygameVisualiser:
             center_y += 1.5 * HEXAGON_SIZE
         return grid
 
+    def draw_board(self):
+        self.draw_grid()
+        self.draw_button()
+        pygame.display.flip()
+
+    def draw_button(self):
+        color = (0, 50, 60)
+        x = self.button_pos[0]
+        y = self.button_pos[1]
+        pygame.draw.circle(self.window, color, (x, y), self.button_radius)
+
+    def is_button_clicked(self, pos):
+        distance = math.sqrt((pos[0] - self.button_pos[0]) ** 2 + (pos[1] - self.button_pos[1]) ** 2)
+        if distance <= self.button_radius:
+            self.save_board()
+
+
+    def save_board(self):
+        with open("board.pkl", "wb") as f:
+            pickle.dump(self.board, f)
+        exit()
+
     def draw_grid(self):
         self.window.fill((0, 0, 0))
         for row_lst in self.grid:
@@ -47,36 +68,10 @@ class PygameVisualiser:
                 hexagon.update_hexagon(self.board)
                 hexagon.draw_hexagon()
 
-    def display_score(self, player_1_fish, player_1_tiles, player_2_fish, player_2_tiles):
-        line_height = 30
-        x_offset = 250
-        y_offset = 10
-        x = WINDOW_WIDTH - x_offset
-        y = y_offset
-
-        player_1_fish_text = f"Player 1 fish: {player_1_fish}"
-        player_1_tiles_text = f"Player 1 tiles: {player_1_tiles}"
-        player_2_fish_text = f"Player 2 fish: {player_2_fish}"
-        player_2_tiles_text = f"Player 2 tiles: {player_2_tiles}"
-        lines = [player_1_fish_text, player_1_tiles_text, player_2_fish_text, player_2_tiles_text]
-        for line in lines:
-            text_surface = self.my_font.render(line, False, (255, 255, 255))
-            self.window.blit(text_surface, (x, y))
-            y += line_height
-
-    def draw_board(self, player_1_fish, player_1_tiles, player_2_fish, player_2_tiles):
-        self.draw_grid()
-        self.display_score(player_1_fish, player_1_tiles, player_2_fish, player_2_tiles)
-        pygame.display.flip()
-
     def handle_QUIT(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:  # The user clicked the close button
                 pygame.quit()
-            # THIS IS USELESS RIGHT?
-            # elif event.type == pygame.MOUSEBUTTONDOWN:
-            #     row, col = self.check_which_hexagon(event.pos)
-            #     return row, col
 
     def check_which_hexagon(self, pos):
         click_radius = 0.85 * HEXAGON_SIZE  # inside circle radius approximation
@@ -94,6 +89,7 @@ class PygameVisualiser:
                 if event.type == pygame.QUIT:  # The user clicked the close button
                     pygame.quit()
                 elif event.type == pygame.MOUSEBUTTONDOWN:
+                    self.is_button_clicked(event.pos)
                     pos = self.check_which_hexagon(event.pos)
                     waiting_on_click = False
         if pos is None:

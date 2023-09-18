@@ -45,7 +45,7 @@ class GameManager:
         self.visualise()
         self.board.game_over()
         self.board.print_scores()
-        time.sleep(10)
+        # time.sleep(10)
 
 
 
