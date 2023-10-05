@@ -1,8 +1,8 @@
 from mcts_vol_4.mcts_vol_4 import MCTS
 from board import Board
 
-PLAYER_1_C = 1.0
-PLAYER_2_C = 1.0
+PLAYER_1_C = 0.4
+PLAYER_2_C = 0.7
 
 
 class Player:

@@ -117,7 +117,7 @@ class MCTS:
     def recycle_node(self, board):
         for child in self.node_to_recycle.children:
             # That's where opponent's penguin should stand on the board:
-            new_penguin_position = child.move if self.draft_board.is_starting_phase else child.move[1]
+            new_penguin_position = child.move if board.is_starting_phase else child.move[1]
             if board.player_board[new_penguin_position] == 3 - board.player_turn:
                 return child
 
