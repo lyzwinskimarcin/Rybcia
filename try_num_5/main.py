@@ -19,9 +19,9 @@ player_1_iterations = 10000
 
 
 player_2_C = 0.7
-player_2_vis_threshold = 20
+player_2_vis_threshold = 10
 player_2_draw_value = 0.5
-player_2_iterations = 50000
+player_2_iterations = 10000
 
 
 

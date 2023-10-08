@@ -28,8 +28,8 @@ class MCTS:
     def do_search(self, board):
         # Create a root node
         root_node = None
-        # if self.node_to_recycle is not None:
-        #     root_node = self.recycle_node(board)
+        if self.node_to_recycle is not None:
+            root_node = self.recycle_node(board)
 
         # This way if recycling fails root_node is still created
         if root_node is None:
@@ -96,8 +96,12 @@ class MCTS:
             score = 0
         return score
 
-
-
+    def recycle_node(self, board):
+        for child in self.node_to_recycle.children:
+            # That's where opponent's penguin should stand on the board:
+            new_penguin_position = child.move if board.is_starting_phase else child.move[1]
+            if board.player_board[new_penguin_position] == 3 - board.player_turn:
+                return child
 
 
 
