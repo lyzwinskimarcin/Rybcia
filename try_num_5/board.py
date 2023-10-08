@@ -1,5 +1,4 @@
 import numpy as np
-from numba import jit
 
 
 class Board:
@@ -112,7 +111,6 @@ class Board:
         positions_of_ones_set = {(row, col) for row, col in positions_of_ones}
         return positions_of_ones_set
 
-    @jit()
     def get_valid_penguin_moves(self):
         valid_moves = set()
         positions = self.get_penguins_positions(self.player_turn)
