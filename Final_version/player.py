@@ -32,6 +32,7 @@ class Player:
         return pos
 
     def get_starting_move(self, board):
+        valid_moves = board.get_valid_moves()
         if self.control_type == "pygame":
             move = self.pygame_visualiser.get_mouse_move()
         elif self.control_type == "console":
@@ -39,6 +40,9 @@ class Player:
         elif self.control_type == "AI":
             # We'll see how mcts is implemented
             move = self.mcts.get_move(board)
+        if move not in valid_moves:
+            print("At the start penguins can only be placed at fields with one fish.")
+            move = self.get_starting_move(board)
         return move
 
     def get_player_move(self, board):

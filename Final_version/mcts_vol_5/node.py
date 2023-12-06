@@ -44,8 +44,10 @@ class Node:
             num_of_favored_moves = 2
             n_rows = self.state.shape[1]
             n_cols = self.state.shape[2]
+            print(self.state.shape)
 
-            center = ((n_rows + 1) // 2, (n_cols + 1) // 2)
+            center = ((n_rows) // 2, (n_cols) // 2)
+
 
             def distance_to_center(node):
                 move = node.move
