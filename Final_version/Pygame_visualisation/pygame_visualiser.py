@@ -58,7 +58,8 @@ class PygameVisualiser:
         player_1_tiles_text = f"Player 1 tiles: {player_1_tiles}"
         player_2_fish_text = f"Player 2 fish: {player_2_fish}"
         player_2_tiles_text = f"Player 2 tiles: {player_2_tiles}"
-        lines = [player_1_fish_text, player_1_tiles_text, player_2_fish_text, player_2_tiles_text]
+        player_turn_text = f"Player {self.board.player_turn} to move."
+        lines = [player_1_fish_text, player_1_tiles_text, player_2_fish_text, player_2_tiles_text, player_turn_text]
         for line in lines:
             text_surface = self.my_font.render(line, False, (255, 255, 255))
             self.window.blit(text_surface, (x, y))

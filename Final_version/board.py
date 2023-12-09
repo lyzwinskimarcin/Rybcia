@@ -18,10 +18,22 @@ class Board:
     def initialize_boards(self):
         """Initializes fish_board, player_board and available_tiles_board and returns them in that order"""
         shape = (self.n_rows, self.n_cols)
+        total_tiles = self.n_rows * self.n_cols
 
-        # need to work on proportions, also there definitely need to be at least one 1 fish tile, preferably more
-        # maybe define amounts and just place them?
-        fish_board = np.random.randint(1, 4, shape)
+        # Defining proportions
+        prop_1_fish = 0.5  # 50% of the tiles
+        prop_2_fish = 0.3  # 30% of the tiles
+        prop_3_fish = 0.2  # 20% of the tiles
+
+        # Calculating the number of tiles for each fish count
+        num_1_fish_tiles = int(total_tiles * prop_1_fish)
+        num_2_fish_tiles = int(total_tiles * prop_2_fish)
+        num_3_fish_tiles = total_tiles - num_1_fish_tiles - num_2_fish_tiles  # Ensuring total count matches
+
+        # Creating the board
+        fish_board = np.array([1] * num_1_fish_tiles + [2] * num_2_fish_tiles + [3] * num_3_fish_tiles)
+        np.random.shuffle(fish_board)  # Shuffle to randomize the board
+        fish_board = fish_board.reshape(shape)
         player_board = np.zeros(shape, dtype='int8')
         available_tiles_board = np.ones(shape, dtype='int8')
         return fish_board, player_board, available_tiles_board

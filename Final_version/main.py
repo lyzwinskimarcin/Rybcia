@@ -15,7 +15,7 @@ CONTROL_PLAYER_2 = "pygame"
 player_1_C = 0.6
 player_1_vis_threshold = 10
 player_1_draw_value = 0.3
-player_1_iterations = 3000
+player_1_iterations = 30000
 
 
 player_2_C = 0.6
