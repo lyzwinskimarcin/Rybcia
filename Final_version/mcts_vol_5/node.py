@@ -35,16 +35,18 @@ class Node:
         self.vis += 1
         self.val = ((self.val * (self.vis - 1)) + score) / self.vis
         if self.parent is not None:
-            self.parent.backpropagate(1 - score)
+            if self.parent.current_player == self.current_player:
+                self.parent.backpropagate(score)
+            else:
+                self.parent.backpropagate(1 - score)
 
     def select_strongest_child(self):
         if self.state[3][0][0] == 0:
             strongest_child = max(self.children, key=lambda child: child.val)
         else:
-            num_of_favored_moves = 2
+            num_of_favored_moves = 3
             n_rows = self.state.shape[1]
             n_cols = self.state.shape[2]
-            print(self.state.shape)
 
             center = ((n_rows) // 2, (n_cols) // 2)
 
@@ -55,7 +57,6 @@ class Node:
 
             closest_nodes = sorted(self.children, key=distance_to_center)[:num_of_favored_moves]
             strongest_child = max(closest_nodes, key=lambda child: child.val)
-            print(center)
         return strongest_child
 
 

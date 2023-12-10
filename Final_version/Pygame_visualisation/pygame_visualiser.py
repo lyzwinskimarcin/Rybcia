@@ -8,7 +8,7 @@ import os
 
 
 WINDOW_HEIGHT = 900
-WINDOW_WIDTH = 1700
+WINDOW_WIDTH = 1500
 HEXAGON_SIZE = 70  # side length
 
 

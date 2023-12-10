@@ -233,25 +233,4 @@ class Board:
         print(f"Player 2 tiles number: {self.player_2_tiles}")
 
 
-# FOR DEBUGGING
-
-# import random
-# board = Board(7, 8, 4)
-# board.print_board(board.fish_board)
-# valid_starting_positions = board.get_valid_moves()
-# print(valid_starting_positions)
-# for i in range(4):
-#     pos = random.sample(valid_starting_positions, 1)[0]
-#     board.move(pos)
-#     valid_starting_positions.remove(pos)
-# board.print_board(board.fish_board)
-# board.print_board(board.player_board)
-# board.print_board(board.available_tiles_board)
-# valid_moves = board.get_valid_moves()
-# board.move(random.sample(valid_moves, 1)[0])
-# board.print_board(board.fish_board)
-# board.print_board(board.player_board)
-# board.print_board(board.available_tiles_board)
-
-
 

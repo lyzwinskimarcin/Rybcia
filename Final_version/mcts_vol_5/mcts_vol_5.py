@@ -44,23 +44,25 @@ class MCTS:
 
         root_node.parent = None
 
-        print("Przed:")
-        print(root_node.moves_to_expand)
-
         iteration = 0
         while iteration < self.iterations:
             self.single_run(root_node)
             iteration += 1
         strongest_child = root_node.select_strongest_child()
         self.node_to_recycle = strongest_child
-
-        print("Po:")
-        print(root_node.moves_to_expand)
+        babelki = sorted(root_node.children, key=lambda child: child.val, reverse=True)
+        for _ in range(min(3, len(babelki))):
+            print(_, ":")
+            print(babelki[_].move)
+            print(babelki[_].val)
 
         return strongest_child.move
 
     def single_run(self, node):
         if node.is_expandable() and node.parent is None:
+            self.expand_and_simulate(node)
+            return
+        elif node.is_expandable() and not node.parent.is_expandable() and node.parent.parent is None:
             self.expand_and_simulate(node)
             return
         elif node.is_expandable() and node.vis < self.vis_threshold:
