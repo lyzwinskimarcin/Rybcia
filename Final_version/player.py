@@ -1,4 +1,4 @@
-from mcts_vol_5.mcts import MCTS
+from mcts.mcts import MCTS
 from board import Board
 
 

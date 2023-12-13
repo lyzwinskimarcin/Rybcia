@@ -1,7 +1,7 @@
 import random
 import numpy as np
 from .node import Node
-from Final_version.mcts_vol_5 import faster_methods
+from Final_version.mcts import faster_methods
 from Final_version.board import Board
 
 
