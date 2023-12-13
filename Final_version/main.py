@@ -1,32 +1,35 @@
 from game_manager import GameManager
 
-# Pycharm parameters are not yet set in this file, to set them go to pygame_visualiser
-WINDOW_HEIGHT = 900
-WINDOW_WIDTH = 1200
-HEXAGON_SIZE = 70  # side length
+
 N_ROWS = 7
 N_COLS = 10
 PENGUINS_NUMBER = 4
 
-VISUALISATION_TYPE = "pygame"
+# Visualisation parameters like window size can be set in pygame_visualiser.py file
+VISUALISATION_TYPE = "pygame"  # Possible "pygame", "console" or any other string will result in no visualisation
+
+# Possible "pygame" if matches visualisation type, "console" regardless of visualisation or "AI"for mcts based opponent
 CONTROL_PLAYER_1 = "pygame"
 CONTROL_PLAYER_2 = "AI"
 
 player_1_C = 0.6
-player_1_vis_threshold = 10
-player_1_draw_value = 0.3
-player_1_iterations = 10000
+player_1_vis_threshold = 12
+player_1_draw_value = 0.4
+player_1_iterations = 3000
 
 
-player_2_C = 0.6
+player_2_C = 0.8
 player_2_vis_threshold = 10
-player_2_draw_value = 0.3
-player_2_iterations = 10000
+player_2_draw_value = 0.4
+player_2_iterations = 20000
+
 
 
 
 def main():
     game_manager = GameManager(N_ROWS, N_COLS, VISUALISATION_TYPE, CONTROL_PLAYER_1, CONTROL_PLAYER_2, PENGUINS_NUMBER)
+
+    # Code below allows to overwrite mcts parameters
 
     # player_1_mcts = game_manager.player_1.mcts
     player_2_mcts = game_manager.player_2.mcts
@@ -41,6 +44,7 @@ def main():
     player_2_mcts.draw_value = player_2_draw_value
     player_2_mcts.iterations = player_2_iterations
 
+    # Running game
     game_manager.game()
 
 

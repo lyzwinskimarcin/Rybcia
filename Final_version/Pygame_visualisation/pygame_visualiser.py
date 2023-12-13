@@ -8,7 +8,7 @@ import os
 
 
 WINDOW_HEIGHT = 900
-WINDOW_WIDTH = 1500
+WINDOW_WIDTH = 1700
 HEXAGON_SIZE = 70  # side length
 
 
@@ -74,10 +74,6 @@ class PygameVisualiser:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:  # The user clicked the close button
                 pygame.quit()
-            # THIS IS USELESS RIGHT?
-            # elif event.type == pygame.MOUSEBUTTONDOWN:
-            #     row, col = self.check_which_hexagon(event.pos)
-            #     return row, col
 
     def check_which_hexagon(self, pos):
         click_radius = 0.85 * HEXAGON_SIZE  # inside circle radius approximation

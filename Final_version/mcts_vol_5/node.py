@@ -2,7 +2,7 @@ import math
 
 
 class Node:
-    def __init__(self, board, parent, move, current_player, moves_to_expand, is_terminal, C=1.00):
+    def __init__(self, board, parent, move, current_player, moves_to_expand,limiting_moves, is_terminal, C=1.00):
         self.vis = 0
         self.val = 0
 
@@ -13,8 +13,9 @@ class Node:
 
         self.move = move
         self.current_player = current_player
-        self.moves_to_expand = moves_to_expand
         self.is_terminal = is_terminal
+        self.moves_to_expand = moves_to_expand
+        self.limiting_moves = limiting_moves
 
         self.C = C
 
@@ -22,8 +23,6 @@ class Node:
         return True if len(self.moves_to_expand) > 0 else False
 
     def ucb(self):
-        if self.vis == 0:
-            return math.inf  # favor exploration of unvisited nodes
         exploration_term = self.C * math.sqrt(math.log(self.parent.vis) / self.vis)
         return self.val + exploration_term
 
@@ -44,12 +43,12 @@ class Node:
         if self.state[3][0][0] == 0:
             strongest_child = max(self.children, key=lambda child: child.val)
         else:
+            # Forcing center moves for starting phase of the game
             num_of_favored_moves = 3
             n_rows = self.state.shape[1]
             n_cols = self.state.shape[2]
 
-            center = ((n_rows) // 2, (n_cols) // 2)
-
+            center = (n_rows // 2, n_cols // 2)
 
             def distance_to_center(node):
                 move = node.move

@@ -1,8 +1,5 @@
-from mcts_vol_5.mcts_vol_5 import MCTS
+from mcts_vol_5.mcts import MCTS
 from board import Board
-
-PLAYER_1_C = 0.4
-PLAYER_2_C = 0.7
 
 
 class Player:
@@ -16,11 +13,7 @@ class Player:
             self.pygame_visualiser = game_manager.pygame_visualiser
         elif control_type == "AI":
             # Initialize mcts here
-            if player_number == 1:
-                C = PLAYER_1_C
-            else:
-                C = PLAYER_2_C
-            self.mcts = MCTS(game_manager.board.n_rows, game_manager.board.n_cols, game_manager.number_of_penguins, iterations=10000, C_value=C)
+            self.mcts = MCTS(game_manager.board.n_rows, game_manager.board.n_cols, game_manager.number_of_penguins)
 
     def get_console_pos(self):
         # Rows and columns counted from zero. To count them from one subtract 1 from each value

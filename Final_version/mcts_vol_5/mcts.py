@@ -5,19 +5,19 @@ from .faster_methods import who_won
 
 
 class MCTS:
-    def __init__(self, n_rows, n_cols, number_of_penguins, iterations=1000, C_value=1.00):
+    def __init__(self, n_rows, n_cols, number_of_penguins, iterations=20000, C_value=0.8):
         self.iterations = iterations
         self.C = C_value
-        self.vis_threshold = 10  # when to expand a node
-        self.draw_value = 0.5
+        self.vis_threshold = 10
+        self.draw_value = 0.4
 
         self.board_operator = EfficientBoardOperator(n_rows, n_cols, number_of_penguins)
 
         # Node to recycle
         self.node_to_recycle = None
 
-        # Storing the center of the board
-        self.board_center =((n_rows + 1)//2, (n_rows + 1)//2)
+        # Storing the center of the board (useful for forcing center moves at the start)
+        self.board_center = ((n_rows + 1)//2, (n_rows + 1)//2)
 
     def get_move(self, board):
         valid_moves = board.get_valid_moves()
@@ -32,7 +32,7 @@ class MCTS:
         root_node = None
         if self.node_to_recycle is not None:
             root_node = self.recycle_node(board)
-
+        root_node = None
         # This way if recycling fails root_node is still created
         if root_node is None:
             current_player = 3 - board.player_turn
@@ -40,7 +40,7 @@ class MCTS:
             self.board_operator.get_board_state(board)
             root_node = Node(board= self.board_operator.board, parent=None,
                              move=None, current_player=current_player,
-                             moves_to_expand=moves_to_expand, is_terminal=False, C=self.C)
+                             moves_to_expand=moves_to_expand, limiting_moves={}, is_terminal=False, C=self.C)
 
         root_node.parent = None
 
@@ -50,12 +50,6 @@ class MCTS:
             iteration += 1
         strongest_child = root_node.select_strongest_child()
         self.node_to_recycle = strongest_child
-        babelki = sorted(root_node.children, key=lambda child: child.val, reverse=True)
-        for _ in range(min(3, len(babelki))):
-            print(_, ":")
-            print(babelki[_].move)
-            print(babelki[_].val)
-
         return strongest_child.move
 
     def single_run(self, node):
@@ -87,15 +81,23 @@ class MCTS:
         node.backpropagate(score)
 
     def expand_node(self, node):
-        # Random expanding
-        move = random.sample(node.moves_to_expand, 1)[0]
+        # Expansion starting with limiting moves if possible
+        if not node.limiting_moves:
+            move = random.sample(node.moves_to_expand, 1)[0]
+        else:
+            move = random.sample(node.limiting_moves, 1)[0]
+            node.limiting_moves.remove(move)
 
         self.board_operator.move(move)
         current_player = 3 - self.board_operator.board[3][0][1]
         moves_to_expand = self.board_operator.get_valid_moves()
+        if self.board_operator.board[3][0][0] == 0:
+            limiting_moves = self.board_operator.find_limiting_moves()
+        else:
+            limiting_moves = {}
         is_terminal = True if self.board_operator.is_game_over() else False
         child = Node(self.board_operator.board, node, move, current_player,
-                     moves_to_expand, is_terminal, node.C)
+                     moves_to_expand,limiting_moves, is_terminal, node.C)
         if is_terminal:
             child.val = self.get_score(current_player)
         node.children.add(child)
@@ -113,6 +115,7 @@ class MCTS:
         return score
 
     def recycle_node(self, board):
+        """Choosing the right branch of the search tree to reuse based on opponent move"""
         for child in self.node_to_recycle.children:
             # That's where opponent's penguin should stand on the board:
             new_penguin_position = child.move if self.node_to_recycle.state[3][0][0] else child.move[1]

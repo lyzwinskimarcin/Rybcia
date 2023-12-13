@@ -23,7 +23,7 @@ class Board:
         # Defining proportions
         prop_1_fish = 0.5  # 50% of the tiles
         prop_2_fish = 0.3  # 30% of the tiles
-        prop_3_fish = 0.2  # 20% of the tiles
+        # 20% of the tiles left for tiles with three fishes
 
         # Calculating the number of tiles for each fish count
         num_1_fish_tiles = int(total_tiles * prop_1_fish)
@@ -57,16 +57,6 @@ class Board:
         for pos in player_2_positions:
             self.player_2_fish += self.fish_board[pos]
             self.player_2_tiles += 1
-
-
-    def who_won(self):
-        """Useful for mcts, returns player number that won or 0 if there is a draw"""
-        if self.player_1_fish > self.player_2_fish:
-            return 1
-        elif self.player_1_fish < self.player_2_fish:
-            return 2
-        else:
-            return 0
 
     # METHODS FOR MAKING MOVES
 

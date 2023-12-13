@@ -4,7 +4,7 @@ from numba import jit
 
 @jit(nopython=True)
 def game_over(board):
-    # Add fish that penguins are standing on
+    # Add fish that penguins are standing on at the end of the game
     player_1_positions = np.argwhere(board[1] == 1)
     positions = []
     for pos in player_1_positions:
@@ -153,6 +153,22 @@ def middle_game_move(board, move):
     # Turn change
     board[3][0][1] = 3 - board[3][0][1]
 
+
+@jit(nopython=True)
+def find_limiting_moves(valid_moves, opponent_moves):
+    # Create a list for opponent fields instead of a set
+    opponent_fields = []
+    for move in opponent_moves:
+        if move[1] not in opponent_fields:
+            opponent_fields.append(move[1])
+
+    # Create a list for limiting moves instead of a set
+    limiting_moves = []
+    for move in valid_moves:
+        if move[1] in opponent_fields:
+            limiting_moves.append(move)
+
+    return limiting_moves
 
 
 

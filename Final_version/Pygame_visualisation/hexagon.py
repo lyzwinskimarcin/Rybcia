@@ -77,6 +77,3 @@ class Hexagon:
                 rect_x += rect_distance
                 draw_fish_rect(rect_x, rect_y)
 
-        # Debugging (draws the center point of the hexagon)
-        # debug_color = (0, 255, 0)
-        # pygame.draw.circle(self.window, debug_color, (self.center_x, self.center_y), 5)

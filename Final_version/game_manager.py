@@ -32,7 +32,7 @@ class GameManager:
             self.pygame_visualiser.draw_board(player_1_fish, player_1_tiles, player_2_fish, player_2_tiles)
 
     def game(self):
-        start_time = time.time()
+        # start_time = time.time()
         running = True
         while running:
             if self.board.is_game_over():
@@ -43,19 +43,15 @@ class GameManager:
             elif self.board.player_turn == 2:
                 start_time = time.time()
                 move = self.player_2.get_player_move(self.board)
-                end_time = time.time()
-                elapsed_time = end_time - start_time
-                print(f"Time taken: {elapsed_time} seconds")
+                # end_time = time.time()
+                # elapsed_time = end_time - start_time
+                # print(f"Time taken: {elapsed_time} seconds")
             self.board.move(move)
-
-        end_time = time.time()
-        elapsed_time = end_time - start_time
-        print(elapsed_time)
 
         self.visualise()
         self.board.game_over()
         self.board.print_scores()
-        time.sleep(10)
+        time.sleep(10)  # Allows to analyze the board for a short time after the game
 
 
 

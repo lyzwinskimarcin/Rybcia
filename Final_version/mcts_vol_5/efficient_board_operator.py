@@ -6,6 +6,7 @@ from Final_version.board import Board
 
 
 class EfficientBoardOperator:
+    """Similar to board.py but with faster methods"""
     def __init__(self, n_rows, n_cols, number_of_penguins):
         shape = (4, n_rows, n_cols)
         self.board = np.zeros(shape, dtype='int8')
@@ -38,8 +39,17 @@ class EfficientBoardOperator:
             move = random.sample(valid_moves, 1)[0]
             self.move(move)
 
-
     # BOARD METHODS
+
+    def find_limiting_moves(self):
+        valid_moves = faster_methods.get_valid_penguin_moves(self.board, self.n_rows, self.n_cols)
+        self.board[3][0][1] = 3 - self.board[3][0][1]
+        opponent_moves = faster_methods.get_valid_penguin_moves(self.board, self.n_rows, self.n_cols)
+        self.board[3][0][1] = 3 - self.board[3][0][1]
+        if not valid_moves or not opponent_moves:
+            return {}
+        limiting_moves = faster_methods.find_limiting_moves(valid_moves, opponent_moves)
+        return limiting_moves
 
     # Game logic methods
 
