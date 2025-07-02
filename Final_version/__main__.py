@@ -1,4 +1,4 @@
-from game_manager import GameManager
+from final_version.game_manager import GameManager
 
 
 N_ROWS = 7
@@ -13,15 +13,15 @@ CONTROL_PLAYER_1 = "pygame"
 CONTROL_PLAYER_2 = "AI"
 
 player_1_C = 0.8
-player_1_vis_threshold = 10
+player_1_vis_threshold = 30
 player_1_draw_value = 0.4
 player_1_iterations = 10000
 
 
 player_2_C = 0.8
-player_2_vis_threshold = 10
+player_2_vis_threshold = 30
 player_2_draw_value = 0.4
-player_2_iterations = 5000
+player_2_iterations = 20000
 
 
 
@@ -48,5 +48,5 @@ def main():
     game_manager.game()
 
 
-main()
-
+if __name__ == "__main__":
+    main()

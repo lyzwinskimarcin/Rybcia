@@ -1,7 +1,7 @@
 import time
-from board import Board
-from player import Player
-from Pygame_visualisation.pygame_visualiser import PygameVisualiser
+from final_version.board import Board
+from final_version.player import Player
+from final_version.pygame_visualisation.pygame_visualiser import PygameVisualiser
 
 
 class GameManager:

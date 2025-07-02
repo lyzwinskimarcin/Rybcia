@@ -1,4 +1,4 @@
-from Visual_board_editor.editor import Editor
+from visual_board_editor.editor import Editor
 from try_num_4.board import Board
 
 

@@ -1,8 +1,8 @@
 import random
 import numpy as np
-from .node import Node
-from Final_version.mcts import faster_methods
-from Final_version.board import Board
+from final_version.mcts.node import Node
+from final_version.board import Board
+from final_version.mcts import faster_methods
 
 
 class EfficientBoardOperator:

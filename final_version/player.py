@@ -1,5 +1,5 @@
-from mcts.mcts import MCTS
-from board import Board
+from final_version.mcts.mcts import MCTS
+from final_version.board import Board
 
 
 class Player:

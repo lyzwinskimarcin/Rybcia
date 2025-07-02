@@ -1,7 +1,7 @@
-from .node import Node
+from final_version.mcts.node import Node
 import random
-from .efficient_board_operator import EfficientBoardOperator
-from .faster_methods import who_won
+from final_version.mcts.efficient_board_operator import EfficientBoardOperator
+from final_version.mcts.faster_methods import who_won
 
 
 class MCTS:
@@ -32,6 +32,7 @@ class MCTS:
         root_node = None
         if self.node_to_recycle is not None:
             root_node = self.recycle_node(board)
+            root_node.parent = None
         if root_node is None:
             current_player = 3 - board.player_turn
             moves_to_expand = board.get_valid_moves()
@@ -39,8 +40,6 @@ class MCTS:
             root_node = Node(board= self.board_operator.board, parent=None,
                              move=None, current_player=current_player,
                              moves_to_expand=moves_to_expand, limiting_moves={}, is_terminal=False, C=self.C)
-
-        root_node.parent = None
 
         iteration = 0
         while iteration < self.iterations:
@@ -65,6 +64,13 @@ class MCTS:
             self.expand_and_simulate(node)
             return
         elif node.is_expandable() and node.vis < self.vis_threshold:
+            self.expand_and_simulate(node)
+            return
+        elif (
+                node.is_expandable()
+                and node.parent is not None
+                and all(child.vis >= self.vis_threshold for child in node.parent.children)
+        ):
             self.expand_and_simulate(node)
             return
         elif node.is_terminal:
