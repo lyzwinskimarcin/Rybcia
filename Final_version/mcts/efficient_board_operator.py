@@ -65,11 +65,11 @@ class EfficientBoardOperator:
         player_1_positions = np.argwhere(self.board[1] == 1)
         player_1_positions = [tuple(pos) for pos in player_1_positions]
         for pos in player_1_positions:
-            self.board[3][3] += self.board[0][pos]
+            self.board[3][0][3] += self.board[0][pos]
         player_2_positions = np.argwhere(self.board[1] == 2)
         player_2_positions = [tuple(pos) for pos in player_2_positions]
         for pos in player_2_positions:
-            self.board[3][3] += self.board[0][pos]
+            self.board[3][0][4] += self.board[0][pos]
 
     def who_won(self):
         if self.board[3][0][3] > self.board[3][0][4]:

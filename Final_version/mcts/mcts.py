@@ -32,8 +32,6 @@ class MCTS:
         root_node = None
         if self.node_to_recycle is not None:
             root_node = self.recycle_node(board)
-        root_node = None
-        # This way if recycling fails root_node is still created
         if root_node is None:
             current_player = 3 - board.player_turn
             moves_to_expand = board.get_valid_moves()
@@ -50,6 +48,13 @@ class MCTS:
             iteration += 1
         strongest_child = root_node.select_strongest_child()
         self.node_to_recycle = strongest_child
+
+        # Print out top 3 moves
+        strongest_children = sorted(root_node.children, key=lambda child: child.val, reverse=True)[:3]
+        for child in strongest_children:
+            print(f"Move: {child.move}")
+            print(f"Value: {child.val}")
+
         return strongest_child.move
 
     def single_run(self, node):

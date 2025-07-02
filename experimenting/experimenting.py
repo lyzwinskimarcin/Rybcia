@@ -1,67 +1,30 @@
 import random
 
-
-companies = {
-    "Amann Girrbach AG",
-    "Wirtschaftsprüfungs-",
-    "Apetito AG",
-    "Dreyer GmbH & Co. KG",
-    "CONSULT GmbH",
-    "gesellschaft",
-    "CEWE Stiftung & Co",
-    "Big Dutchman",
-    "EDL Rethschulte GmbH",
-    "International GmH",
-    "ELA Container GmbH",
-    "Dr.Oetker",
-    "KGAA",
-    "Stiftung & Co. KGaA",
-    "enable energy solutions",
-    "Farmingtons Automotive",
-    "Gauselmann Group",
-    "HagerEnergy GmbH",
-    "G&S IT Group GmbH",
-    "GmbH",
-    "Harting",
-    "Herden Böttinger Borkel Herzog Maschinenfabrik",
-    "ITEBO",
-    "Technologiegruppe",
-    "ISCOPE GmbH",
-    "Neureiter GmbH",
-    "GmbH Co. KG",
-    "Unternehmensgruppe",
-    "NZR Nordwestdeutsche",
-    "MUUUH! Group",
-    "neusta infomantis GmbH",
-    "Z ählerrevision Ing. Aug.",
-    "Knemeyer GmbH & Co. KG",
-    "Open Knowledge GmbH",
-    "PPS Pipeline Systems",
-    "Prof. Roll & Pastuch",
-    "Provinzial Holding AG",
-    "Management Consultants|",
-    "Röchling Industrial",
-    "Prowind GmbH",
-    "Schütte Treuhand KG",
-    "Sievers-Group",
-    "SE&Co. KG",
-    "Sparkasse Osnabrück",
-    "August Storck KG",
-    "Tetra",
-    "Worldiety GmbH",
-    "MLP Finanzberatung SE",
-    "Oase GmbH",
-    "PwC Deutschland",
-    "Sievert",
-    "Unternehmensgruppe",
-    "TSO Data",
-    "Uno Minda Europe GmbH"
-}
+def get_GCD(a: int, b: int) -> int:
+    long = a if a >= b else b
+    short = a if a != long else b
+    for i in range(short, 0, -1):
+        if a % i == 0 and b % i == 0:
+            res = i
+            break
+    return res
 
 
-results = random.sample(companies, 5)
-print(results)
+def gcd(a, b):
+    while(b != 0):
+        t = a
+        a = b
+        b = t % b
+    return a
 
+lst = [[3,7], [4,16], [81, 18], [25, 200], [51, 28]]
+
+for pair in lst:
+    a = pair[0]
+    b = pair[1]
+    print(f"Numbers: {a}, {b}.")
+    res = gcd(a, b)
+    print(res)
 
 
 

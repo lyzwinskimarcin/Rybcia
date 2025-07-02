@@ -12,16 +12,16 @@ VISUALISATION_TYPE = "pygame"  # Possible "pygame", "console" or any other strin
 CONTROL_PLAYER_1 = "pygame"
 CONTROL_PLAYER_2 = "AI"
 
-player_1_C = 0.6
-player_1_vis_threshold = 12
+player_1_C = 0.8
+player_1_vis_threshold = 10
 player_1_draw_value = 0.4
-player_1_iterations = 3000
+player_1_iterations = 10000
 
 
 player_2_C = 0.8
 player_2_vis_threshold = 10
 player_2_draw_value = 0.4
-player_2_iterations = 20000
+player_2_iterations = 5000
 
 
 
